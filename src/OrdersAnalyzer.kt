@@ -17,10 +17,6 @@ class OrdersAnalyzer {
         return LocalDateTime.parse(date, formatter)
     }
 
-    private fun getDayOfWeek(date: LocalDateTime): DayOfWeek {
-        return date.dayOfWeek
-    }
-
     private fun sumOrdersPrice(orderLines: List<OrderLine>): Int {
         var sum = BigDecimal(0)
         for (line in orderLines) {
@@ -40,7 +36,7 @@ class OrdersAnalyzer {
     fun totalDailySales(orders: List<Order>): MutableMap<DayOfWeek, Int> {
         val ordersMap = HashMap<DayOfWeek, Int>()
         for (order in orders) {
-            val orderDay = getDayOfWeek(order.creationDate)
+            val orderDay = order.creationDate.dayOfWeek
             val orderSum = sumOrdersQuantity(order.orderLines)
             ordersMap[orderDay] = ordersMap.getOrDefault(orderDay, 0) + orderSum
         }
@@ -143,6 +139,6 @@ fun main() {
             )
         )
     )
-    OrdersAnalyzer().totalDailySales(orders)
+    println(analyzer.totalDailySales(orders))
 }
 
